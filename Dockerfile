@@ -11,6 +11,19 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
 
+RUN apt-get install -y --no-install-recommends libxml2-dev
+RUN apt-get install -y libmagickwand-dev libmagickcore-dev libmagickwand-dev libcurl3-dev curl libxslt-dev unzip git
+WORKDIR /usr/src/
+RUN git clone https://github.com/alexeyrybak/blitz.git
+WORKDIR blitz
+RUN phpize && ./configure && make && make install
+RUN docker-php-ext-enable blitz
+WORKDIR /usr/src
+RUN rm -rf blitz
+
+RUN docker-php-ext-install xsl intl sockets bcmath pdo pdo_mysql mysqli soap
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 COPY ./docker-php.conf /etc/apache2/conf-enabled/docker-php.conf
 
 RUN printf "log_errors = On \nerror_log = /dev/stderr\n" > /usr/local/etc/php/conf.d/php-logs.ini
@@ -36,4 +49,4 @@ RUN echo 'umask 002' >> /root/.bashrc
 RUN echo 'instantclient,/usr/local/instantclient' | pecl install oci8-1.4.10
 RUN echo "extension=oci8.so" > /usr/local/etc/php/conf.d/php-oci8.ini
 
-EXPOSE 80
+RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $buildDeps
