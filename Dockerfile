@@ -21,10 +21,10 @@ RUN docker-php-ext-enable blitz
 WORKDIR /usr/src
 RUN rm -rf blitz
 
-RUN docker-php-ext-install xsl intl sockets bcmath pdo pdo_mysql mysqli soap
+RUN docker-php-ext-install xsl intl sockets bcmath pdo soap
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY ./docker-php.conf /etc/apache2/conf-enabled/docker-php.conf
+COPY ./apache-php.conf /etc/apache2/conf-enabled/apache-php.conf
 
 RUN printf "log_errors = On \nerror_log = /dev/stderr\n" > /usr/local/etc/php/conf.d/php-logs.ini
 
