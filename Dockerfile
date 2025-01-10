@@ -32,8 +32,8 @@ RUN a2enmod rewrite
 
 RUN pecl channel-update pecl.php.net
 
-RUN cd /tmp && curl -k -L https://zet.im/oci8/instantclient-basiclite-linux.x64-19.5.0.0.0dbru.zip -O
-RUN cd /tmp && curl -k -L https://zet.im/oci8/instantclient-sdk-linux.x64-19.5.0.0.0dbru.zip -O
+RUN cd /tmp && curl -k -L https://zet.im/oci8/instantclient-basic-linux.x64-19.25.0.0.0dbru.zip -O
+RUN cd /tmp && curl -k -L https://zet.im/oci8/instantclient-sdk-linux.x64-19.25.0.0.0dbru.zip -O
 
 RUN unzip /tmp/instantclient-basiclite-linux.x64-19.5.0.0.0dbru.zip -d /usr/local/
 RUN unzip /tmp/instantclient-sdk-linux.x64-19.5.0.0.0dbru.zip -d /usr/local/
